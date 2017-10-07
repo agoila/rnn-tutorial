@@ -40,16 +40,28 @@ def load_preprocess():
     """
     return pickle.load(open('preprocess.p', mode='rb'))
 
-
-def save_params(params):
+def save_params_vanilla(params):
     """
     Save parameters to file
     """
-    pickle.dump(params, open('params.p', 'wb'))
+    pickle.dump(params, open('params_vanilla.p', 'wb'))
 
 
-def load_params():
+def save_params_lstm(params):
+    """
+    Save parameters to file
+    """
+    pickle.dump(params, open('params_lstm.p', 'wb'))
+
+
+def load_params_vanilla():
     """
     Load parameters from file
     """
-    return pickle.load(open('params.p', mode='rb'))
+    return pickle.load(open('params_vanilla.p', mode='rb'))
+
+def load_params_lstm():
+    """
+    Load parameters from file
+    """
+    return pickle.load(open('params_lstm.p', mode='rb'))
