@@ -7,9 +7,10 @@
 import helper
 import numpy as np
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 _, vocab_to_int, int_to_vocab, token_dict = helper.load_preprocess()
-seq_length, load_dir = helper.load_params_lstm()
+seq_length, _, _, load_dir = helper.load_params_lstm()
 
 def get_tensors(loaded_graph):
     """
@@ -49,11 +50,11 @@ with tf.Session(graph=loaded_graph) as sess:
     loader.restore(sess, load_dir)
 
     # Get Tensors from loaded model
-    input_text, initial_state, final_state, probs = get_tensors(loaded_graph)
+    inputs, initial_state, final_state, probs = get_tensors(loaded_graph)
 
     # Sentences generation setup
     gen_sentences = [prime_word + ':']
-    prev_state = sess.run(initial_state, {input_text: np.array([[1]])})
+    prev_state = sess.run(initial_state, {inputs: np.array([[1]])})
 
     # Generate sentences
     for n in range(gen_length):
@@ -64,7 +65,7 @@ with tf.Session(graph=loaded_graph) as sess:
         # Get Prediction
         probabilities, prev_state = sess.run(
             [probs, final_state],
-            {input_text: dyn_input, initial_state: prev_state})
+            {inputs: dyn_input, initial_state: prev_state})
 
         pred_word = pick_word(probabilities[:, dyn_seq_length-1], int_to_vocab)
 

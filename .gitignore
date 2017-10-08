@@ -1,2 +1,4 @@
 assets 
 data
+checkpoints
+logs_lstm

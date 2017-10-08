@@ -7,9 +7,10 @@
 import helper
 import numpy as np
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 _, vocab_to_int, int_to_vocab, token_dict = helper.load_preprocess()
-seq_length, load_dir = helper.load_params_vanilla()
+seq_length, _, _, load_dir = helper.load_params_vanilla()
 
 def get_tensors(loaded_graph):
     """
