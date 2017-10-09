@@ -1,5 +1,5 @@
 ''' author: agoila
-    changed: 2017-10-07
+    changed: 2017-10-08
     created: 2017-10-05
     descr: generating script samples for vanilla RNN
     usage: Run `python generate_vanilla_sample.py`.
@@ -9,8 +9,25 @@ import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
+# Load parameters for generating a new script
 _, vocab_to_int, int_to_vocab, token_dict = helper.load_preprocess()
 seq_length, _, _, load_dir = helper.load_params_vanilla()
+
+
+###################################################################################################################
+# Implement Generate Functions
+# 
+# Get Tensors
+#
+# Get tensors from loaded_graph using the function get_tensor_by_name(). Get the tensors using the following names:
+# "input:0"
+# "initial_state:0"
+# "final_state:0"
+# "probs:0"
+#
+# Since we are using name_scope(s), we need to add appropriate name_scope(s) prior to accessing its tensors.
+# Return the tensors in the following tuple (InputTensor, InitialStateTensor, FinalStateTensor, ProbsTensor)
+###################################################################################################################
 
 def get_tensors(loaded_graph):
     """
@@ -20,11 +37,17 @@ def get_tensors(loaded_graph):
     """
     # Implement Function
     InputTensor = tf.Graph.get_tensor_by_name(loaded_graph, name="input:0")
-    InitialStateTensor = tf.Graph.get_tensor_by_name(loaded_graph, name="initial_state:0")
-    FinalStateTensor = tf.Graph.get_tensor_by_name(loaded_graph, name="final_state:0")
-    ProbsTensor = tf.Graph.get_tensor_by_name(loaded_graph, name="probs:0")
+    InitialStateTensor = tf.Graph.get_tensor_by_name(loaded_graph, name="vanilla_cell/initial_state:0")
+    FinalStateTensor = tf.Graph.get_tensor_by_name(loaded_graph, name="vanilla_cell/final_state:0")
+    ProbsTensor = tf.Graph.get_tensor_by_name(loaded_graph, name="model_out/probs:0")
     return (InputTensor, InitialStateTensor, FinalStateTensor, ProbsTensor)
 
+
+##################################################################################
+# Choose Word
+#
+# Implement the pick_word() function to select the next word using probabilities.
+##################################################################################
 
 def pick_word(probabilities, int_to_vocab):
     """
@@ -37,10 +60,16 @@ def pick_word(probabilities, int_to_vocab):
     return np.random.choice(list(int_to_vocab.values()), 1, p=np.squeeze(probabilities))[0]
 
 
+############################################################################################################
+# Generate TV Script
+#
+# This will generate the TV script for you. Set gen_length to the length of TV script you want to generate.
+############################################################################################################
+
 gen_length = 200
+
 # homer_simpson, moe_szyslak, or Barney_Gumble
 # this is the word that you want your sentence to start with
-# play around with this a bit more to see how the RNN responds!
 prime_word = 'moe_szyslak'
 
 loaded_graph = tf.Graph()
@@ -52,7 +81,7 @@ with tf.Session(graph=loaded_graph) as sess:
     # Get Tensors from loaded model
     input_text, initial_state, final_state, probs = get_tensors(loaded_graph)
 
-    # Sentences generation setup
+    # Sentence generation setup
     gen_sentences = [prime_word + ':']
     prev_state = sess.run(initial_state, {input_text: np.array([[1]])})
 

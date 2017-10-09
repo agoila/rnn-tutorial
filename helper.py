@@ -1,5 +1,8 @@
 import os
 import pickle
+import random
+from collections import Counter
+import numpy as np
 
 
 def load_data(path):
@@ -31,37 +34,38 @@ def preprocess_and_save_data(dataset_path, token_lookup, create_lookup_tables):
 
     vocab_to_int, int_to_vocab = create_lookup_tables(text)
     int_text = [vocab_to_int[word] for word in text]
-    pickle.dump((int_text, vocab_to_int, int_to_vocab, token_dict), open('preprocess.p', 'wb'))
+    
+    pickle.dump((int_text, vocab_to_int, int_to_vocab, token_dict), open('data/preprocess.p', 'wb'))
 
 
 def load_preprocess():
     """
     Load the Preprocessed Training data and return them in batches of <batch_size> or less
     """
-    return pickle.load(open('preprocess.p', mode='rb'))
+    return pickle.load(open('data/preprocess.p', mode='rb'))
 
 def save_params_vanilla(params):
     """
-    Save parameters to file
+    Save vanilla RNN parameters to file
     """
-    pickle.dump(params, open('params_vanilla.p', 'wb'))
+    pickle.dump(params, open('data/params_vanilla.p', 'wb'))
 
 
 def save_params_lstm(params):
     """
-    Save parameters to file
+    Save LSTM RNN parameters to file
     """
-    pickle.dump(params, open('params_lstm.p', 'wb'))
+    pickle.dump(params, open('data/params_lstm.p', 'wb'))
 
 
 def load_params_vanilla():
     """
-    Load parameters from file
+    Load vanilla RNN parameters from file
     """
-    return pickle.load(open('params_vanilla.p', mode='rb'))
+    return pickle.load(open('data/params_vanilla.p', mode='rb'))
 
 def load_params_lstm():
     """
-    Load parameters from file
+    Load LSTM RNN parameters from file
     """
-    return pickle.load(open('params_lstm.p', mode='rb'))
+    return pickle.load(open('data/params_lstm.p', mode='rb'))
