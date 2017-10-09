@@ -344,7 +344,6 @@ with train_graph.as_default():
     with tf.name_scope("embedding_layer"):
         embedding = tf.Variable(tf.random_uniform([vocab_size, embed_dim], -1, 1), name="embedding")
         embed = tf.nn.embedding_lookup(embedding, inputs)
-        tf.summary.scalar("embedding_l", embedding)
 
 
     ############################################################################    
@@ -423,11 +422,11 @@ with tf.Session(graph=train_graph) as sess:
     summary_op = tf.summary.merge_all()
     sess.run(tf.global_variables_initializer())
     file_writer = tf.summary.FileWriter('./logs_vanilla/1', sess.graph)
-    loss = 0
+    saver = tf.train.Saver()
+    iteration = 0
 
     for epoch_i in range(num_epochs):
         state = sess.run(initial_state, {inputs: batches[0][0]})
-        start = time.time()
 
         for batch_i, (x, y) in enumerate(batches):
             feed = {
@@ -437,7 +436,7 @@ with tf.Session(graph=train_graph) as sess:
                 lr: learning_rate}
             train_loss, state, _ = sess.run([cost, final_state, train_op], feed)
             
-            loss += train_loss
+            iteration += 1
 
             # Show every <show_every_n_batches> batches
             if (epoch_i * len(batches) + batch_i) % show_every_n_batches == 0:
@@ -446,11 +445,13 @@ with tf.Session(graph=train_graph) as sess:
                     batch_i,
                     len(batches),
                     train_loss))
-                loss = 0
-                start = time.time()                
+                
+            if iteration % 5 == 0:
+                s = sess.run(summary_op, feed)
+                file_writer.add_summary(s, iteration)
+                
 
     # Save Model
-    saver = tf.train.Saver()
     embed_mat = sess.run(embedding)
     saver.save(sess, './logs_vanilla/1/embedding.ckpt')
     saver.save(sess, save_dir_vanilla)

@@ -1,3 +1,3 @@
-model_checkpoint_path: "vanilla_save"
-all_model_checkpoint_paths: "logs_vanilla\\1\\embedding.ckpt"
-all_model_checkpoint_paths: "vanilla_save"
+model_checkpoint_path: "lstm_save"
+all_model_checkpoint_paths: "logs_lstm\\1\\embedding.ckpt"
+all_model_checkpoint_paths: "lstm_save"
