@@ -1,4 +1,5 @@
-assets 
-data
-checkpoints
-logs_lstm
+PartA/MNIST_data/*
+PartA/checkpoints/*
+PartA/logs/*
+PartB/data/*
+*.pyc

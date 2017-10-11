@@ -1,3 +1,0 @@
-model_checkpoint_path: "embeddings_lstm.ckpt"
-all_model_checkpoint_paths: "..\\lstm_save"
-all_model_checkpoint_paths: "embeddings_lstm.ckpt"
