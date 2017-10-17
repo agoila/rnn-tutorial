@@ -1,5 +1,5 @@
 ''' author: agoila
-    changed: 2017-10-08
+    changed: 2017-10-15
     created: 2017-10-05
     descr: basic vanilla RNN for script generation
     usage: Run `python vanilla-RNN.py`.
@@ -75,21 +75,19 @@ text = text[81:]
 view_sentence_range = (0, 10)
 
 print('Dataset Stats')
-print('Roughly the number of unique words: {}'.format(len({word: None for word in text.split()})))
+print('{} unique words'.format(len(set(text.split()))))
 scenes = text.split('\n\n')
-print('Number of scenes: {}'.format(len(scenes)))
+print('{} scenes'.format(len(scenes)))
 sentence_count_scene = [scene.count('\n') for scene in scenes]
-print('Average number of sentences in each scene: {}'.format(np.average(sentence_count_scene)))
+print('{:.2f} sentences per scene'.format(np.average(sentence_count_scene)))
 
 sentences = [sentence for scene in scenes for sentence in scene.split('\n')]
-print('Number of lines: {}'.format(len(sentences)))
+print('{} lines'.format(len(sentences)))
 word_count_sentence = [len(sentence.split()) for sentence in sentences]
-print('Average number of words in each line: {}'.format(np.average(word_count_sentence)))
+print('{} words per line'.format(np.average(word_count_sentence)))
 
-print()
-print('The sentences {} to {}:'.format(*view_sentence_range))
+print('\nThe sentences {} to {}:'.format(*view_sentence_range))
 print('\n'.join(text.split('\n')[view_sentence_range[0]:view_sentence_range[1]]))
-
 
 ########################################################################  
 # Step 2
@@ -206,7 +204,7 @@ int_text, vocab_to_int, int_to_vocab, token_dict = helper.load_preprocess()
 ###############################################################################
 
 # Number of Epochs
-num_epochs = 60
+num_epochs = 10
 # Batch Size
 batch_size = 128
 # RNN Size

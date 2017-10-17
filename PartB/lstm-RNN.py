@@ -1,5 +1,5 @@
 ''' author: agoila
-    changed: 2017-10-08
+    changed: 2017-10-15
     created: 2017-10-05
     descr: LSTM RNN for script generation
     usage: Run `python lstm-RNN.py`.
@@ -72,22 +72,21 @@ text = text[81:]
 # of the data. You can comment out the following lines to not have your program 
 # print the output for every single run.
 ########################################################################
+view_sentence_range = (0, 5)
 
-view_sentence_range = (0, 10)
+nb_words = len(text.split())
+nb_uniqs = len(set(text.split()))
+nb_scenes = len(text.split('\n\n'))
+nb_lines = len(text.split('\n')) - nb_scenes + 1 
 
 print('Dataset Stats')
-print('Roughly the number of unique words: {}'.format(len({word: None for word in text.split()})))
-scenes = text.split('\n\n')
-print('Number of scenes: {}'.format(len(scenes)))
-sentence_count_scene = [scene.count('\n') for scene in scenes]
-print('Average number of sentences in each scene: {}'.format(np.average(sentence_count_scene)))
+print('{} unique words'.format(nb_uniqs))
+print('{} words'.format(nb_words))
+print('{} lines'.format(nb_lines))
+print('{} scenes'.format(nb_scenes))
+print('{:.2f} words per line'.format(nb_words/float(nb_lines)))
+print('{:.2f} lines per scene'.format(nb_lines/float(nb_scenes)))
 
-sentences = [sentence for scene in scenes for sentence in scene.split('\n')]
-print('Number of lines: {}'.format(len(sentences)))
-word_count_sentence = [len(sentence.split()) for sentence in sentences]
-print('Average number of words in each line: {}'.format(np.average(word_count_sentence)))
-
-print()
 print('The sentences {} to {}:'.format(*view_sentence_range))
 print('\n'.join(text.split('\n')[view_sentence_range[0]:view_sentence_range[1]]))
 
@@ -207,7 +206,7 @@ int_text, vocab_to_int, int_to_vocab, token_dict = helper.load_preprocess()
 ###############################################################################
 
 # Number of Epochs
-num_epochs = 60
+num_epochs = 2
 # Batch Size
 batch_size = 128
 # RNN Size

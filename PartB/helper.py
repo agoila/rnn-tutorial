@@ -62,10 +62,12 @@ def load_params_vanilla():
     """
     Load vanilla RNN parameters from file
     """
-    return pickle.load(open('data/params_vanilla.p', mode='rb'))
+    f = open('data/params_vanilla.p', mode='rb')
+    return pickle.load(f, encoding='latin-1')
 
 def load_params_lstm():
     """
     Load LSTM RNN parameters from file
     """
-    return pickle.load(open('data/params_lstm.p', mode='rb'))
+    f = open('data/params_lstm.p', mode='rb')
+    return pickle.load(f, encoding='latin-1')
